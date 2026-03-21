@@ -32,39 +32,45 @@
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
+            dgvCiudadanos = new DataGridView();
+            label6 = new Label();
+            btnMostrarDatos = new Button();
+            btnEditar = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvCiudadanos).BeginInit();
             SuspendLayout();
             // 
             // txtId
             // 
-            txtId.Location = new Point(80, 20);
+            txtId.Location = new Point(84, 70);
             txtId.Name = "txtId";
+            txtId.ReadOnly = true;
             txtId.Size = new Size(150, 27);
             txtId.TabIndex = 0;
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(80, 60);
+            txtNombre.Location = new Point(84, 110);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(150, 27);
             txtNombre.TabIndex = 1;
             // 
             // txtEdad
             // 
-            txtEdad.Location = new Point(80, 100);
+            txtEdad.Location = new Point(84, 150);
             txtEdad.Name = "txtEdad";
             txtEdad.Size = new Size(150, 27);
             txtEdad.TabIndex = 2;
             // 
             // txtPosicion
             // 
-            txtPosicion.Location = new Point(80, 140);
+            txtPosicion.Location = new Point(84, 190);
             txtPosicion.Name = "txtPosicion";
             txtPosicion.Size = new Size(150, 27);
             txtPosicion.TabIndex = 3;
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(80, 180);
+            btnGuardar.Location = new Point(54, 244);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(150, 30);
             btnGuardar.TabIndex = 4;
@@ -102,7 +108,7 @@
             // lblTiempoSecuencial
             // 
             lblTiempoSecuencial.AutoSize = true;
-            lblTiempoSecuencial.Location = new Point(575, 70);
+            lblTiempoSecuencial.Location = new Point(345, 283);
             lblTiempoSecuencial.Name = "lblTiempoSecuencial";
             lblTiempoSecuencial.Size = new Size(108, 20);
             lblTiempoSecuencial.TabIndex = 8;
@@ -111,7 +117,7 @@
             // lblTiempoIndexado
             // 
             lblTiempoIndexado.AutoSize = true;
-            lblTiempoIndexado.Location = new Point(575, 110);
+            lblTiempoIndexado.Location = new Point(345, 323);
             lblTiempoIndexado.Name = "lblTiempoIndexado";
             lblTiempoIndexado.Size = new Size(108, 20);
             lblTiempoIndexado.TabIndex = 9;
@@ -139,7 +145,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(10, 23);
+            label1.Location = new Point(14, 73);
             label1.Name = "label1";
             label1.Size = new Size(27, 20);
             label1.TabIndex = 4;
@@ -148,7 +154,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(10, 63);
+            label2.Location = new Point(14, 113);
             label2.Name = "label2";
             label2.Size = new Size(67, 20);
             label2.TabIndex = 3;
@@ -157,7 +163,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(10, 103);
+            label3.Location = new Point(14, 153);
             label3.Name = "label3";
             label3.Size = new Size(46, 20);
             label3.TabIndex = 2;
@@ -166,7 +172,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(10, 143);
+            label4.Location = new Point(14, 193);
             label4.Name = "label4";
             label4.Size = new Size(66, 20);
             label4.TabIndex = 1;
@@ -181,9 +187,53 @@
             label5.TabIndex = 0;
             label5.Text = "ID a Buscar:";
             // 
+            // dgvCiudadanos
+            // 
+            dgvCiudadanos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCiudadanos.Location = new Point(586, 70);
+            dgvCiudadanos.Name = "dgvCiudadanos";
+            dgvCiudadanos.RowHeadersWidth = 51;
+            dgvCiudadanos.Size = new Size(596, 381);
+            dgvCiudadanos.TabIndex = 12;
+            dgvCiudadanos.CellClick += dgvCiudadanos_CellClick;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Arial", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(833, 23);
+            label6.Name = "label6";
+            label6.Size = new Size(73, 26);
+            label6.TabIndex = 13;
+            label6.Text = "Datos";
+            // 
+            // btnMostrarDatos
+            // 
+            btnMostrarDatos.Location = new Point(1032, 23);
+            btnMostrarDatos.Name = "btnMostrarDatos";
+            btnMostrarDatos.Size = new Size(150, 30);
+            btnMostrarDatos.TabIndex = 14;
+            btnMostrarDatos.Text = "Mostrar datos";
+            btnMostrarDatos.UseVisualStyleBackColor = true;
+            btnMostrarDatos.Click += btnMostrarDatos_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.Location = new Point(24, 314);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(94, 29);
+            btnEditar.TabIndex = 15;
+            btnEditar.Text = "Editar";
+            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += btnEditar_Click;
+            // 
             // Form1
             // 
-            ClientSize = new Size(749, 250);
+            ClientSize = new Size(1236, 487);
+            Controls.Add(btnEditar);
+            Controls.Add(btnMostrarDatos);
+            Controls.Add(label6);
+            Controls.Add(dgvCiudadanos);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -203,9 +253,61 @@
             Controls.Add(txtId);
             Name = "Form1";
             Text = "Lab: El Arquitecto de Datos";
+            Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvCiudadanos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
+        private void ConfigurarDisenoTabla()
+        {
+       
+            // 1. Limpiar y evitar columnas automáticas
+            dgvCiudadanos.AutoGenerateColumns = false;
+            dgvCiudadanos.Columns.Clear();
+
+            // 2. Crear Columna ID
+            dgvCiudadanos.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "IdProp", // Coincide con tu struct
+                HeaderText = "ID",
+                Width = 60,
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleCenter }
+            });
+
+            // 3. Crear Columna Nombre
+            dgvCiudadanos.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "NombreProp", // Coincide con tu struct
+                HeaderText = "Nombre Completo",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            // 4. Crear Columna Edad
+            dgvCiudadanos.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "EdadProp", // Coincide con tu struct
+                HeaderText = "Edad",
+                Width = 80,
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleCenter }
+            });
+
+            // --- Diseño Visual ---
+            dgvCiudadanos.AllowUserToAddRows = false;
+            dgvCiudadanos.ReadOnly = true;
+            dgvCiudadanos.RowHeadersVisible = false;
+            dgvCiudadanos.BackgroundColor = Color.White;
+            dgvCiudadanos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            // Estilo de encabezado azul
+            dgvCiudadanos.EnableHeadersVisualStyles = false;
+            dgvCiudadanos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(41, 128, 185);
+            dgvCiudadanos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvCiudadanos.ColumnHeadersHeight = 35;
+
+            // Efecto cebra
+            dgvCiudadanos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
+        }
+        
 
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.TextBox txtNombre;
@@ -224,5 +326,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private DataGridView dgvCiudadanos;
+        private Label label6;
+        private Button btnMostrarDatos;
+        private Button btnEditar;
     }
 }

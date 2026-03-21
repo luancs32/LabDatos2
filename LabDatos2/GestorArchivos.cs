@@ -22,6 +22,43 @@ namespace LabDatos2
                 }
             }
         }
+        public List<Ciudadano> LeerTodos()
+        {
+            List<Ciudadano> lista = new List<Ciudadano>();
+            string rutaDatos = "datos_ciudadanos.dat";
+
+            // Si el archivo no existe (porque lo borraste o es la primera vez), 
+            // regresamos la lista vacía para que no marque error.
+            if (!File.Exists(rutaDatos))
+            {
+                return lista;
+            }
+
+            using (FileStream fs = new FileStream(rutaDatos, FileMode.Open, FileAccess.Read))
+            using (BinaryReader br = new BinaryReader(fs))
+            {
+                // Recorremos el archivo mientras no lleguemos al final
+                while (fs.Position < fs.Length)
+                {
+                    Ciudadano ciudadano = new Ciudadano();
+
+                    // ⚠️ IMPORTANTE: El orden de lectura DEBE ser exactamente el mismo 
+                    // en el que los guardas. Asumo que es Id, Nombre y Edad.
+                    ciudadano.Id = br.ReadInt32();
+                    //ciudadano.Nombre = br.ReadString();
+                    ciudadano.Nombre = new string(br.ReadChars(50)).TrimEnd('\0', ' ');
+                    ciudadano.Edad = br.ReadInt32();
+
+                    lista.Add(ciudadano);
+
+                    // Nota: Si en tu método GuardarCiudadano usas un tamaño de registro fijo 
+                    // (por ejemplo, rellenas con espacios o saltas bytes para que todos midan lo mismo),
+                    // la lógica de avance iría aquí. Si usas guardado continuo, este código es perfecto.
+                }
+            }
+
+            return lista;
+        }
 
         public Ciudadano? LeerCiudadano(int posicion)
         {
