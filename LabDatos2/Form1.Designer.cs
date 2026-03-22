@@ -39,6 +39,7 @@
             btnEliminar = new Button();
             btnCargar = new Button();
             txtTamañoLote = new TextBox();
+            btnVaciar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCiudadanos).BeginInit();
             SuspendLayout();
             // 
@@ -252,14 +253,27 @@
             // 
             // txtTamañoLote
             // 
-            txtTamañoLote.Location = new Point(24, 403);
+            txtTamañoLote.Font = new Font("Segoe UI", 12F);
+            txtTamañoLote.Location = new Point(24, 434);
+            txtTamañoLote.Multiline = true;
             txtTamañoLote.Name = "txtTamañoLote";
-            txtTamañoLote.Size = new Size(94, 27);
+            txtTamañoLote.Size = new Size(78, 41);
             txtTamañoLote.TabIndex = 18;
+            // 
+            // btnVaciar
+            // 
+            btnVaciar.Location = new Point(75, 354);
+            btnVaciar.Name = "btnVaciar";
+            btnVaciar.Size = new Size(94, 29);
+            btnVaciar.TabIndex = 19;
+            btnVaciar.Text = "Vaciar";
+            btnVaciar.UseVisualStyleBackColor = true;
+            btnVaciar.Click += btnVaciar_Click;
             // 
             // Form1
             // 
             ClientSize = new Size(1236, 487);
+            Controls.Add(btnVaciar);
             Controls.Add(txtTamañoLote);
             Controls.Add(btnCargar);
             Controls.Add(btnEliminar);
@@ -366,5 +380,6 @@
         private Button btnEliminar;
         private Button btnCargar;
         private TextBox txtTamañoLote;
+        private Button btnVaciar;
     }
 }

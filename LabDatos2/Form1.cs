@@ -491,5 +491,60 @@ namespace LabDatos2
                 txtEdad.Text = seleccionado.EdadProp.ToString();
             }
         }
+
+        private void btnVaciar_Click(object sender, EventArgs e)
+        {
+            //vaciar el archivo local y tambien en sql server y comenzar en 0
+            // 1. Pregunta de seguridad (¡Muy importante para no borrar por accidente!)
+            DialogResult respuesta = MessageBox.Show(
+                "¿Estás ABSOLUTAMENTE SEGURA de que quieres borrar TODOS los registros?\nSe vaciará el archivo local y la base de datos permanentemente.",
+                "¡ADVERTENCIA DE BORRADO MASIVO!",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                try
+                {
+                    // --- A. VACIAR LA BASE DE DATOS (SQL Server) ---
+                    string connectionString = "Server=10.12.13.143,1433;Database=LabDatos2;User Id=sa;Password=123;TrustServerCertificate=True;";
+                    using (SqlConnection conexion = new SqlConnection(connectionString))
+                    {
+                        // Usamos TRUNCATE en lugar de DELETE porque es instantáneo y limpia todo de raíz
+                        string query = "TRUNCATE TABLE Ciudadanos";
+                        using (SqlCommand comando = new SqlCommand(query, conexion))
+                        {
+                            conexion.Open();
+                            comando.ExecuteNonQuery();
+                        }
+                    }
+
+                    // --- B. VACIAR EL ARCHIVO LOCAL (.dat) ---
+                    // Al usar FileMode.Create, C# aplasta el archivo viejo y crea uno nuevo totalmente vacío (0 bytes)
+                    using (FileStream fs = new FileStream("datos_ciudadanos.dat", FileMode.Create, FileAccess.Write))
+                    {
+                        // No escribimos nada, solo lo dejamos en blanco.
+                    }
+
+                    // --- C. LIMPIAR LA INTERFAZ VISUAL ---
+                    _listaCiudadanos.Clear(); // Vaciamos la lista en memoria
+                    dgvCiudadanos.Refresh();  // Actualizamos la tabla para que se vea vacía
+
+                    // Limpiamos los textos
+                    txtNombre.Clear();
+                    txtEdad.Clear();
+
+                    // ¡La magia! Como la lista ya tiene 0 elementos, tu método pondrá el ID en 0 automáticamente
+                    ActualizarSiguienteRegistro();
+
+                    MessageBox.Show("¡Limpieza total completada!\nTu sistema está como nuevo y listo para empezar desde el ID 0.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al intentar vaciar el sistema: " + ex.Message);
+                }
+            }
+
+        }
     }
 }
