@@ -36,6 +36,9 @@
             label6 = new Label();
             btnMostrarDatos = new Button();
             btnEditar = new Button();
+            btnEliminar = new Button();
+            btnCargar = new Button();
+            txtTamañoLote = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvCiudadanos).BeginInit();
             SuspendLayout();
             // 
@@ -195,7 +198,7 @@
             dgvCiudadanos.RowHeadersWidth = 51;
             dgvCiudadanos.Size = new Size(596, 381);
             dgvCiudadanos.TabIndex = 12;
-            dgvCiudadanos.CellClick += dgvCiudadanos_CellClick;
+            dgvCiudadanos.CellDoubleClick += dgvCiudadanos_CellDoubleClick;
             // 
             // label6
             // 
@@ -227,9 +230,39 @@
             btnEditar.UseVisualStyleBackColor = true;
             btnEditar.Click += btnEditar_Click;
             // 
+            // btnEliminar
+            // 
+            btnEliminar.Location = new Point(140, 314);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(94, 29);
+            btnEliminar.TabIndex = 16;
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
+            // 
+            // btnCargar
+            // 
+            btnCargar.Location = new Point(24, 19);
+            btnCargar.Name = "btnCargar";
+            btnCargar.Size = new Size(94, 29);
+            btnCargar.TabIndex = 17;
+            btnCargar.Text = "Cargar";
+            btnCargar.UseVisualStyleBackColor = true;
+            btnCargar.Click += btnCargar_Click;
+            // 
+            // txtTamañoLote
+            // 
+            txtTamañoLote.Location = new Point(24, 403);
+            txtTamañoLote.Name = "txtTamañoLote";
+            txtTamañoLote.Size = new Size(94, 27);
+            txtTamañoLote.TabIndex = 18;
+            // 
             // Form1
             // 
             ClientSize = new Size(1236, 487);
+            Controls.Add(txtTamañoLote);
+            Controls.Add(btnCargar);
+            Controls.Add(btnEliminar);
             Controls.Add(btnEditar);
             Controls.Add(btnMostrarDatos);
             Controls.Add(label6);
@@ -330,5 +363,8 @@
         private Label label6;
         private Button btnMostrarDatos;
         private Button btnEditar;
+        private Button btnEliminar;
+        private Button btnCargar;
+        private TextBox txtTamañoLote;
     }
 }
