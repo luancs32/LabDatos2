@@ -483,7 +483,7 @@ namespace LabDatos2
             };
 
             int inicioId = _listaCiudadanos.Count; // Empezamos desde el ID que siga
-            int cantidadAGenerar = 100000;
+            int cantidadAGenerar = 500000;
 
             try
             {
