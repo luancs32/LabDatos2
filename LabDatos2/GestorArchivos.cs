@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace LabDatos2
@@ -42,7 +43,7 @@ namespace LabDatos2
                 {
                     Ciudadano ciudadano = new Ciudadano();
 
-                    // ⚠️ IMPORTANTE: El orden de lectura DEBE ser exactamente el mismo 
+                    // IMPORTANTE: El orden de lectura DEBE ser exactamente el mismo 
                     // en el que los guardas. Asumo que es Id, Nombre y Edad.
                     ciudadano.Id = br.ReadInt32();
                     //ciudadano.Nombre = br.ReadString();
@@ -77,9 +78,12 @@ namespace LabDatos2
                     int edad = reader.ReadInt32();
 
                     Ciudadano c = new Ciudadano();
+
+                    // ¡Aquí está el cambio clave!
                     c.Id = id;
                     c.Nombre = nombre;
                     c.Edad = edad;
+
                     return c;
                 }
             }

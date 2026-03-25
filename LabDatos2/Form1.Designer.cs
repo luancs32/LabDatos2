@@ -19,302 +19,104 @@ namespace LabDatos2
 
         private void InitializeComponent()
         {
-            // ══════════════════════════════════════════════════════════════
-            //  PALETA  —  Rose Executive (variables locales)
-            // ══════════════════════════════════════════════════════════════
-            Color cBgForm = Color.FromArgb(250, 246, 248);
-            Color cBgPanel = Color.White;
-            Color cBgInput = Color.FromArgb(253, 250, 252);
-            Color cBgInputRO = Color.FromArgb(245, 241, 244);
-            Color cRose = Color.FromArgb(188, 100, 130);
-            Color cRoseDark = Color.FromArgb(155, 70, 100);
-            Color cMauve = Color.FromArgb(160, 120, 155);
-            Color cSage = Color.FromArgb(110, 155, 135);
-            Color cSlate = Color.FromArgb(100, 110, 140);
-            Color cTextDark = Color.FromArgb(60, 45, 55);
-            Color cTextMid = Color.FromArgb(90, 55, 72);
-            Color cTextLight = Color.FromArgb(148, 85, 112);
-            Color cBorder = Color.FromArgb(228, 210, 220);
-            Color cHeaderBg = Color.FromArgb(80, 50, 70);
-            Color cPanelGap = Color.FromArgb(235, 225, 230);
-
-            Font fontTitle = new Font("Segoe UI", 14F, FontStyle.Bold);
-            Font fontSub = new Font("Segoe UI", 8.5F, FontStyle.Regular);
-            Font fontSection = new Font("Segoe UI", 8F, FontStyle.Bold);
-            Font fontLabel = new Font("Segoe UI", 8F, FontStyle.Bold);
-            Font fontInput = new Font("Segoe UI", 10F, FontStyle.Regular);
-            Font fontBtn = new Font("Segoe UI", 9F, FontStyle.Bold);
-            Font fontBtnSm = new Font("Segoe UI", 8.5F, FontStyle.Bold);
-            Font fontSmall = new Font("Segoe UI", 8.5F, FontStyle.Regular);
-
-            // ── Controles ─────────────────────────────────────────────────
             pnlHeader = new Panel();
-            pnlLeft = new Panel();
-            pnlCenter = new Panel();
-            pnlRight = new Panel();
-
             lblTitulo = new Label();
             lblSubtitulo = new Label();
+            pnlAccent = new Panel();
+            pnlLeft = new Panel();
             lblSeccionRegistro = new Label();
-            lblSeccionBusqueda = new Label();
-            lblSeccionOps = new Label();
-            lblLote = new Label();
-
-            txtId = new TextBox();
-            txtNombre = new TextBox();
-            txtEdad = new TextBox();
-            txtPosicion = new TextBox();
-            btnGuardar = new Button();
-            txtBuscarId = new TextBox();
-            btnBuscarSecuencial = new Button();
-            btnBuscarIndexado = new Button();
-            lblTiempoSecuencial = new Label();
-            lblTiempoIndexado = new Label();
-            lblResultado = new Label();
-            btnMigrarSql = new Button();
             label1 = new Label();
+            txtId = new TextBox();
             label2 = new Label();
+            txtNombre = new TextBox();
             label3 = new Label();
+            txtEdad = new TextBox();
             label4 = new Label();
-            label5 = new Label();
-            dgvCiudadanos = new DataGridView();
-            label6 = new Label();
-            btnMostrarDatos = new Button();
+            txtPosicion = new TextBox();
+            divReg = new Panel();
+            btnGuardar = new Button();
             btnEditar = new Button();
             btnEliminar = new Button();
             btnCargar = new Button();
-            txtTamañoLote = new TextBox();
             btnVaciar = new Button();
-
+            divLote = new Panel();
+            lblLote = new Label();
+            txtTamañoLote = new TextBox();
+            pnlCenter = new Panel();
+            lblSeccionBusqueda = new Label();
+            label5 = new Label();
+            txtBuscarId = new TextBox();
+            btnBuscarSecuencial = new Button();
+            btnBuscarIndexado = new Button();
+            divRes = new Panel();
+            lblResultado = new Label();
+            lblTimingTitle = new Label();
+            lblTiempoSecuencial = new Label();
+            lblTiempoIndexado = new Label();
+            divOps = new Panel();
+            lblSeccionOps = new Label();
+            btnMigrarSql = new Button();
+            pnlRight = new Panel();
+            label6 = new Label();
+            btnMostrarDatos = new Button();
+            dgvCiudadanos = new DataGridView();
+            sepLC = new Panel();
+            sepCR = new Panel();
+            pnlHeader.SuspendLayout();
+            pnlLeft.SuspendLayout();
+            pnlCenter.SuspendLayout();
+            pnlRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCiudadanos).BeginInit();
             SuspendLayout();
-
-            // ══════════════════════════════════════════════════════════════
-            //  HEADER
-            // ══════════════════════════════════════════════════════════════
-            Panel pnlAccent = new Panel();
-            pnlAccent.BackColor = cRose;
-            pnlAccent.Dock = DockStyle.Bottom;
-            pnlAccent.Height = 3;
-
-            lblTitulo.Text = "El Arquitecto de Datos";
-            lblTitulo.Font = fontTitle;
-            lblTitulo.ForeColor = Color.White;
-            lblTitulo.Location = new Point(20, 8);
-            lblTitulo.AutoSize = true;
-            lblTitulo.BackColor = Color.Transparent;
-
-            lblSubtitulo.Text = "Gestión y búsqueda de ciudadanos";
-            lblSubtitulo.Font = fontSub;
-            lblSubtitulo.ForeColor = Color.FromArgb(200, 175, 190);
-            lblSubtitulo.Location = new Point(22, 42);
-            lblSubtitulo.AutoSize = true;
-            lblSubtitulo.BackColor = Color.Transparent;
-
-            pnlHeader.BackColor = cHeaderBg;
-            pnlHeader.Dock = DockStyle.Top;
-            pnlHeader.Height = 70;
+            // 
+            // pnlHeader
+            // 
+            pnlHeader.BackColor = Color.FromArgb(80, 50, 70);
             pnlHeader.Controls.Add(lblTitulo);
             pnlHeader.Controls.Add(lblSubtitulo);
             pnlHeader.Controls.Add(pnlAccent);
-
-            // ══════════════════════════════════════════════════════════════
-            //  PANEL IZQUIERDO  —  Registro
-            // ══════════════════════════════════════════════════════════════
-            pnlLeft.BackColor = cBgPanel;
-            pnlLeft.Location = new Point(12, 82);
-            pnlLeft.Size = new Size(258, 500);
-            pnlLeft.Name = "pnlLeft";
-
-            // Sección
-            lblSeccionRegistro.Text = "REGISTRO";
-            lblSeccionRegistro.Font = fontSection;
-            lblSeccionRegistro.ForeColor = cTextLight;
-            lblSeccionRegistro.Location = new Point(16, 18);
-            lblSeccionRegistro.AutoSize = true;
-            lblSeccionRegistro.BackColor = Color.Transparent;
-
-            // ID
-            label1.Text = "ID";
-            label1.Font = fontLabel;
-            label1.ForeColor = cTextMid;
-            label1.Location = new Point(16, 46);
-            label1.AutoSize = true;
-            label1.BackColor = Color.Transparent;
-            label1.Name = "label1";
-            label1.TabIndex = 4;
-
-            txtId.Location = new Point(16, 62);
-            txtId.Size = new Size(224, 27);
-            txtId.ReadOnly = true;
-            txtId.TabIndex = 0;
-            txtId.Name = "txtId";
-            txtId.BackColor = cBgInputRO;
-            txtId.ForeColor = cTextLight;
-            txtId.Font = fontInput;
-            txtId.BorderStyle = BorderStyle.FixedSingle;
-
-            // Nombre
-            label2.Text = "NOMBRE";
-            label2.Font = fontLabel;
-            label2.ForeColor = cTextMid;
-            label2.Location = new Point(16, 100);
-            label2.AutoSize = true;
-            label2.BackColor = Color.Transparent;
-            label2.Name = "label2";
-            label2.TabIndex = 3;
-
-            txtNombre.Location = new Point(16, 116);
-            txtNombre.Size = new Size(224, 27);
-            txtNombre.TabIndex = 1;
-            txtNombre.Name = "txtNombre";
-            txtNombre.BackColor = cBgInput;
-            txtNombre.ForeColor = cTextDark;
-            txtNombre.Font = fontInput;
-            txtNombre.BorderStyle = BorderStyle.FixedSingle;
-
-            // Edad
-            label3.Text = "EDAD";
-            label3.Font = fontLabel;
-            label3.ForeColor = cTextMid;
-            label3.Location = new Point(16, 154);
-            label3.AutoSize = true;
-            label3.BackColor = Color.Transparent;
-            label3.Name = "label3";
-            label3.TabIndex = 2;
-
-            txtEdad.Location = new Point(16, 170);
-            txtEdad.Size = new Size(224, 27);
-            txtEdad.TabIndex = 2;
-            txtEdad.Name = "txtEdad";
-            txtEdad.BackColor = cBgInput;
-            txtEdad.ForeColor = cTextDark;
-            txtEdad.Font = fontInput;
-            txtEdad.BorderStyle = BorderStyle.FixedSingle;
-
-            // Posición
-            label4.Text = "POSICIÓN";
-            label4.Font = fontLabel;
-            label4.ForeColor = cTextMid;
-            label4.Location = new Point(16, 208);
-            label4.AutoSize = true;
-            label4.BackColor = Color.Transparent;
-            label4.Name = "label4";
-            label4.TabIndex = 1;
-
-            txtPosicion.Location = new Point(16, 224);
-            txtPosicion.Size = new Size(224, 27);
-            txtPosicion.TabIndex = 3;
-            txtPosicion.Name = "txtPosicion";
-            txtPosicion.BackColor = cBgInput;
-            txtPosicion.ForeColor = cTextDark;
-            txtPosicion.Font = fontInput;
-            txtPosicion.BorderStyle = BorderStyle.FixedSingle;
-
-            // Divisor
-            Panel divReg = new Panel();
-            divReg.BackColor = cBorder;
-            divReg.Location = new Point(16, 264);
-            divReg.Size = new Size(224, 1);
-
-            // Guardar
-            btnGuardar.Location = new Point(16, 276);
-            btnGuardar.Size = new Size(224, 34);
-            btnGuardar.Text = "Guardar Registro";
-            btnGuardar.TabIndex = 4;
-            btnGuardar.Name = "btnGuardar";
-            btnGuardar.BackColor = cRose;
-            btnGuardar.ForeColor = Color.White;
-            btnGuardar.Font = fontBtn;
-            btnGuardar.FlatStyle = FlatStyle.Flat;
-            btnGuardar.FlatAppearance.BorderSize = 0;
-            btnGuardar.Cursor = Cursors.Hand;
-            btnGuardar.Click += btnGuardar_Click;
-
-            // Editar
-            btnEditar.Location = new Point(16, 320);
-            btnEditar.Size = new Size(108, 30);
-            btnEditar.Text = "Editar";
-            btnEditar.TabIndex = 15;
-            btnEditar.Name = "btnEditar";
-            btnEditar.BackColor = cBgPanel;
-            btnEditar.ForeColor = cMauve;
-            btnEditar.Font = fontBtnSm;
-            btnEditar.FlatStyle = FlatStyle.Flat;
-            btnEditar.FlatAppearance.BorderColor = cMauve;
-            btnEditar.FlatAppearance.BorderSize = 1;
-            btnEditar.Cursor = Cursors.Hand;
-            btnEditar.Click += btnEditar_Click;
-
-            // Eliminar
-            btnEliminar.Location = new Point(132, 320);
-            btnEliminar.Size = new Size(108, 30);
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.TabIndex = 16;
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.BackColor = cBgPanel;
-            btnEliminar.ForeColor = cRoseDark;
-            btnEliminar.Font = fontBtnSm;
-            btnEliminar.FlatStyle = FlatStyle.Flat;
-            btnEliminar.FlatAppearance.BorderColor = cRoseDark;
-            btnEliminar.FlatAppearance.BorderSize = 1;
-            btnEliminar.Cursor = Cursors.Hand;
-            btnEliminar.Click += btnEliminar_Click;
-
-            // Cargar
-            btnCargar.Location = new Point(16, 360);
-            btnCargar.Size = new Size(108, 30);
-            btnCargar.Text = "Cargar";
-            btnCargar.TabIndex = 17;
-            btnCargar.Name = "btnCargar";
-            btnCargar.BackColor = cBgPanel;
-            btnCargar.ForeColor = cTextLight;
-            btnCargar.Font = fontBtnSm;
-            btnCargar.FlatStyle = FlatStyle.Flat;
-            btnCargar.FlatAppearance.BorderColor = cTextLight;
-            btnCargar.FlatAppearance.BorderSize = 1;
-            btnCargar.Cursor = Cursors.Hand;
-            btnCargar.Click += btnCargar_Click;
-
-            // Vaciar
-            btnVaciar.Location = new Point(132, 360);
-            btnVaciar.Size = new Size(108, 30);
-            btnVaciar.Text = "Vaciar";
-            btnVaciar.TabIndex = 19;
-            btnVaciar.Name = "btnVaciar";
-            btnVaciar.BackColor = cBgPanel;
-            btnVaciar.ForeColor = cTextLight;
-            btnVaciar.Font = fontBtnSm;
-            btnVaciar.FlatStyle = FlatStyle.Flat;
-            btnVaciar.FlatAppearance.BorderColor = cTextLight;
-            btnVaciar.FlatAppearance.BorderSize = 1;
-            btnVaciar.Cursor = Cursors.Hand;
-            btnVaciar.Click += btnVaciar_Click;
-
-            // Divisor lote
-            Panel divLote = new Panel();
-            divLote.BackColor = cBorder;
-            divLote.Location = new Point(16, 404);
-            divLote.Size = new Size(224, 1);
-
-            // Tamaño de lote
-            lblLote.Text = "TAMAÑO DE LOTE";
-            lblLote.Font = fontLabel;
-            lblLote.ForeColor = cTextMid;
-            lblLote.Location = new Point(16, 414);
-            lblLote.AutoSize = true;
-            lblLote.BackColor = Color.Transparent;
-
-            txtTamañoLote.Location = new Point(16, 432);
-            txtTamañoLote.Size = new Size(224, 40);
-            txtTamañoLote.Font = new Font("Segoe UI", 12F);
-            txtTamañoLote.Multiline = true;
-            txtTamañoLote.TabIndex = 18;
-            txtTamañoLote.Name = "txtTamañoLote";
-            txtTamañoLote.BackColor = cBgInput;
-            txtTamañoLote.ForeColor = cTextDark;
-            txtTamañoLote.BorderStyle = BorderStyle.FixedSingle;
-
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1270, 70);
+            pnlHeader.TabIndex = 0;
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.AutoSize = true;
+            lblTitulo.BackColor = Color.Transparent;
+            lblTitulo.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitulo.ForeColor = Color.White;
+            lblTitulo.Location = new Point(20, 8);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(271, 32);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "El Arquitecto de Datos";
+            // 
+            // lblSubtitulo
+            // 
+            lblSubtitulo.AutoSize = true;
+            lblSubtitulo.BackColor = Color.Transparent;
+            lblSubtitulo.Font = new Font("Segoe UI", 8.5F);
+            lblSubtitulo.ForeColor = Color.FromArgb(200, 175, 190);
+            lblSubtitulo.Location = new Point(22, 42);
+            lblSubtitulo.Name = "lblSubtitulo";
+            lblSubtitulo.Size = new Size(240, 20);
+            lblSubtitulo.TabIndex = 1;
+            lblSubtitulo.Text = "Gestión y búsqueda de ciudadanos";
+            // 
+            // pnlAccent
+            // 
+            pnlAccent.BackColor = Color.FromArgb(188, 100, 130);
+            pnlAccent.Dock = DockStyle.Bottom;
+            pnlAccent.Location = new Point(0, 67);
+            pnlAccent.Name = "pnlAccent";
+            pnlAccent.Size = new Size(1270, 3);
+            pnlAccent.TabIndex = 2;
+            // 
+            // pnlLeft
+            // 
+            pnlLeft.BackColor = Color.White;
             pnlLeft.Controls.Add(lblSeccionRegistro);
             pnlLeft.Controls.Add(label1);
             pnlLeft.Controls.Add(txtId);
@@ -331,135 +133,239 @@ namespace LabDatos2
             pnlLeft.Controls.Add(btnCargar);
             pnlLeft.Controls.Add(btnVaciar);
             pnlLeft.Controls.Add(divLote);
-            pnlLeft.Controls.Add(lblLote);
-            pnlLeft.Controls.Add(txtTamañoLote);
-
-            // ══════════════════════════════════════════════════════════════
-            //  PANEL CENTRAL  —  Búsqueda
-            // ══════════════════════════════════════════════════════════════
-            pnlCenter.BackColor = cBgPanel;
-            pnlCenter.Location = new Point(282, 82);
-            pnlCenter.Size = new Size(258, 500);
-            pnlCenter.Name = "pnlCenter";
-
-            lblSeccionBusqueda.Text = "BÚSQUEDA";
-            lblSeccionBusqueda.Font = fontSection;
-            lblSeccionBusqueda.ForeColor = cTextLight;
-            lblSeccionBusqueda.Location = new Point(16, 18);
-            lblSeccionBusqueda.AutoSize = true;
-            lblSeccionBusqueda.BackColor = Color.Transparent;
-
-            label5.Text = "ID A BUSCAR";
-            label5.Font = fontLabel;
-            label5.ForeColor = cTextMid;
-            label5.Location = new Point(16, 46);
-            label5.AutoSize = true;
-            label5.BackColor = Color.Transparent;
-            label5.Name = "label5";
-            label5.TabIndex = 0;
-
-            txtBuscarId.Location = new Point(16, 62);
-            txtBuscarId.Size = new Size(224, 27);
-            txtBuscarId.TabIndex = 5;
-            txtBuscarId.Name = "txtBuscarId";
-            txtBuscarId.BackColor = cBgInput;
-            txtBuscarId.ForeColor = cTextDark;
-            txtBuscarId.Font = fontInput;
-            txtBuscarId.BorderStyle = BorderStyle.FixedSingle;
-
-            btnBuscarSecuencial.Location = new Point(16, 104);
-            btnBuscarSecuencial.Size = new Size(224, 32);
-            btnBuscarSecuencial.Text = "Búsqueda Secuencial";
-            btnBuscarSecuencial.TabIndex = 6;
-            btnBuscarSecuencial.Name = "btnBuscarSecuencial";
-            btnBuscarSecuencial.BackColor = cBgPanel;
-            btnBuscarSecuencial.ForeColor = cMauve;
-            btnBuscarSecuencial.Font = fontBtnSm;
-            btnBuscarSecuencial.FlatStyle = FlatStyle.Flat;
-            btnBuscarSecuencial.FlatAppearance.BorderColor = cMauve;
-            btnBuscarSecuencial.FlatAppearance.BorderSize = 1;
-            btnBuscarSecuencial.Cursor = Cursors.Hand;
-            btnBuscarSecuencial.Click += btnBuscarSecuencial_Click;
-
-            btnBuscarIndexado.Location = new Point(16, 146);
-            btnBuscarIndexado.Size = new Size(224, 32);
-            btnBuscarIndexado.Text = "Búsqueda Indexada";
-            btnBuscarIndexado.TabIndex = 7;
-            btnBuscarIndexado.Name = "btnBuscarIndexado";
-            btnBuscarIndexado.BackColor = cSage;
-            btnBuscarIndexado.ForeColor = Color.White;
-            btnBuscarIndexado.Font = fontBtnSm;
-            btnBuscarIndexado.FlatStyle = FlatStyle.Flat;
-            btnBuscarIndexado.FlatAppearance.BorderSize = 0;
-            btnBuscarIndexado.Cursor = Cursors.Hand;
-            btnBuscarIndexado.Click += btnBuscarIndexado_Click;
-
-            Panel divRes = new Panel();
-            divRes.BackColor = cBorder;
-            divRes.Location = new Point(16, 194);
-            divRes.Size = new Size(224, 1);
-
-            lblResultado.Text = "Esperando búsqueda...";
-            lblResultado.Font = fontSmall;
-            lblResultado.ForeColor = cTextLight;
-            lblResultado.Location = new Point(16, 200);
-            lblResultado.Size = new Size(224, 42);
-            lblResultado.AutoSize = false;
-            lblResultado.BackColor = Color.Transparent;
-            lblResultado.Name = "lblResultado";
-            lblResultado.TabIndex = 10;
-
-            Label lblTimingTitle = new Label();
-            lblTimingTitle.Text = "TIEMPOS DE EJECUCIÓN";
-            lblTimingTitle.Font = fontLabel;
-            lblTimingTitle.ForeColor = cTextLight;
-            lblTimingTitle.Location = new Point(16, 252);
-            lblTimingTitle.AutoSize = true;
-            lblTimingTitle.BackColor = Color.Transparent;
-
-            lblTiempoSecuencial.Text = "Secuencial:  0 ticks";
-            lblTiempoSecuencial.Font = fontSmall;
-            lblTiempoSecuencial.ForeColor = cTextMid;
-            lblTiempoSecuencial.Location = new Point(16, 274);
-            lblTiempoSecuencial.AutoSize = true;
-            lblTiempoSecuencial.BackColor = Color.Transparent;
-            lblTiempoSecuencial.Name = "lblTiempoSecuencial";
-            lblTiempoSecuencial.TabIndex = 8;
-
-            lblTiempoIndexado.Text = "Indexada:    0 ticks";
-            lblTiempoIndexado.Font = fontSmall;
-            lblTiempoIndexado.ForeColor = cSage;
-            lblTiempoIndexado.Location = new Point(16, 296);
-            lblTiempoIndexado.AutoSize = true;
-            lblTiempoIndexado.BackColor = Color.Transparent;
-            lblTiempoIndexado.Name = "lblTiempoIndexado";
-            lblTiempoIndexado.TabIndex = 9;
-
-            Panel divOps = new Panel();
-            divOps.BackColor = cBorder;
-            divOps.Location = new Point(16, 328);
-            divOps.Size = new Size(224, 1);
-
-            lblSeccionOps.Text = "OPERACIONES";
-            lblSeccionOps.Font = fontSection;
-            lblSeccionOps.ForeColor = cTextLight;
-            lblSeccionOps.Location = new Point(16, 340);
-            lblSeccionOps.AutoSize = true;
-            lblSeccionOps.BackColor = Color.Transparent;
-
-            btnMigrarSql.Location = new Point(16, 364);
-            btnMigrarSql.Size = new Size(224, 32);
-            btnMigrarSql.Text = "Migrar a SQL Server";
-            btnMigrarSql.TabIndex = 11;
-            btnMigrarSql.Name = "btnMigrarSql";
-            btnMigrarSql.BackColor = cSlate;
-            btnMigrarSql.ForeColor = Color.White;
-            btnMigrarSql.Font = fontBtnSm;
-            btnMigrarSql.FlatStyle = FlatStyle.Flat;
-            btnMigrarSql.FlatAppearance.BorderSize = 0;
-            btnMigrarSql.Cursor = Cursors.Hand;
-            btnMigrarSql.Click += btnMigrarSql_Click;
-
+            pnlLeft.Location = new Point(12, 82);
+            pnlLeft.Name = "pnlLeft";
+            pnlLeft.Size = new Size(258, 500);
+            pnlLeft.TabIndex = 1;
+            // 
+            // lblSeccionRegistro
+            // 
+            lblSeccionRegistro.AutoSize = true;
+            lblSeccionRegistro.BackColor = Color.Transparent;
+            lblSeccionRegistro.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblSeccionRegistro.ForeColor = Color.FromArgb(148, 85, 112);
+            lblSeccionRegistro.Location = new Point(16, 18);
+            lblSeccionRegistro.Name = "lblSeccionRegistro";
+            lblSeccionRegistro.Size = new Size(75, 19);
+            lblSeccionRegistro.TabIndex = 0;
+            lblSeccionRegistro.Text = "REGISTRO";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(90, 55, 72);
+            label1.Location = new Point(16, 46);
+            label1.Name = "label1";
+            label1.Size = new Size(23, 19);
+            label1.TabIndex = 4;
+            label1.Text = "ID";
+            // 
+            // txtId
+            // 
+            txtId.BackColor = Color.FromArgb(245, 241, 244);
+            txtId.BorderStyle = BorderStyle.FixedSingle;
+            txtId.Font = new Font("Segoe UI", 10F);
+            txtId.ForeColor = Color.FromArgb(148, 85, 112);
+            txtId.Location = new Point(16, 62);
+            txtId.Name = "txtId";
+            txtId.ReadOnly = true;
+            txtId.Size = new Size(224, 30);
+            txtId.TabIndex = 0;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            label2.ForeColor = Color.FromArgb(90, 55, 72);
+            label2.Location = new Point(16, 100);
+            label2.Name = "label2";
+            label2.Size = new Size(69, 19);
+            label2.TabIndex = 3;
+            label2.Text = "NOMBRE";
+            // 
+            // txtNombre
+            // 
+            txtNombre.BackColor = Color.FromArgb(253, 250, 252);
+            txtNombre.BorderStyle = BorderStyle.FixedSingle;
+            txtNombre.Font = new Font("Segoe UI", 10F);
+            txtNombre.ForeColor = Color.FromArgb(60, 45, 55);
+            txtNombre.Location = new Point(16, 116);
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(224, 30);
+            txtNombre.TabIndex = 1;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = Color.Transparent;
+            label3.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            label3.ForeColor = Color.FromArgb(90, 55, 72);
+            label3.Location = new Point(16, 154);
+            label3.Name = "label3";
+            label3.Size = new Size(46, 19);
+            label3.TabIndex = 2;
+            label3.Text = "EDAD";
+            // 
+            // txtEdad
+            // 
+            txtEdad.BackColor = Color.FromArgb(253, 250, 252);
+            txtEdad.BorderStyle = BorderStyle.FixedSingle;
+            txtEdad.Font = new Font("Segoe UI", 10F);
+            txtEdad.ForeColor = Color.FromArgb(60, 45, 55);
+            txtEdad.Location = new Point(16, 170);
+            txtEdad.Name = "txtEdad";
+            txtEdad.Size = new Size(224, 30);
+            txtEdad.TabIndex = 2;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            label4.ForeColor = Color.FromArgb(90, 55, 72);
+            label4.Location = new Point(16, 208);
+            label4.Name = "label4";
+            label4.Size = new Size(76, 19);
+            label4.TabIndex = 1;
+            label4.Text = "POSICIÓN";
+            // 
+            // txtPosicion
+            // 
+            txtPosicion.BackColor = Color.FromArgb(253, 250, 252);
+            txtPosicion.BorderStyle = BorderStyle.FixedSingle;
+            txtPosicion.Font = new Font("Segoe UI", 10F);
+            txtPosicion.ForeColor = Color.FromArgb(60, 45, 55);
+            txtPosicion.Location = new Point(16, 224);
+            txtPosicion.Name = "txtPosicion";
+            txtPosicion.Size = new Size(224, 30);
+            txtPosicion.TabIndex = 3;
+            // 
+            // divReg
+            // 
+            divReg.BackColor = Color.FromArgb(228, 210, 220);
+            divReg.Location = new Point(16, 264);
+            divReg.Name = "divReg";
+            divReg.Size = new Size(224, 1);
+            divReg.TabIndex = 5;
+            // 
+            // btnGuardar
+            // 
+            btnGuardar.BackColor = Color.FromArgb(188, 100, 130);
+            btnGuardar.Cursor = Cursors.Hand;
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.Location = new Point(16, 276);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(224, 34);
+            btnGuardar.TabIndex = 4;
+            btnGuardar.Text = "Guardar Registro";
+            btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.BackColor = Color.White;
+            btnEditar.Cursor = Cursors.Hand;
+            btnEditar.FlatAppearance.BorderColor = Color.FromArgb(160, 120, 155);
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            btnEditar.ForeColor = Color.FromArgb(160, 120, 155);
+            btnEditar.Location = new Point(16, 320);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(108, 30);
+            btnEditar.TabIndex = 15;
+            btnEditar.Text = "Editar";
+            btnEditar.UseVisualStyleBackColor = false;
+            btnEditar.Click += btnEditar_Click;
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.BackColor = Color.White;
+            btnEliminar.Cursor = Cursors.Hand;
+            btnEliminar.FlatAppearance.BorderColor = Color.FromArgb(155, 70, 100);
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            btnEliminar.ForeColor = Color.FromArgb(155, 70, 100);
+            btnEliminar.Location = new Point(132, 320);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(108, 30);
+            btnEliminar.TabIndex = 16;
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.UseVisualStyleBackColor = false;
+            btnEliminar.Click += btnEliminar_Click;
+            // 
+            // btnCargar
+            // 
+            btnCargar.BackColor = Color.White;
+            btnCargar.Cursor = Cursors.Hand;
+            btnCargar.FlatAppearance.BorderColor = Color.FromArgb(148, 85, 112);
+            btnCargar.FlatStyle = FlatStyle.Flat;
+            btnCargar.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            btnCargar.ForeColor = Color.FromArgb(148, 85, 112);
+            btnCargar.Location = new Point(16, 360);
+            btnCargar.Name = "btnCargar";
+            btnCargar.Size = new Size(108, 30);
+            btnCargar.TabIndex = 17;
+            btnCargar.Text = "Cargar";
+            btnCargar.UseVisualStyleBackColor = false;
+            btnCargar.Click += btnCargar_Click;
+            // 
+            // btnVaciar
+            // 
+            btnVaciar.BackColor = Color.White;
+            btnVaciar.Cursor = Cursors.Hand;
+            btnVaciar.FlatAppearance.BorderColor = Color.FromArgb(148, 85, 112);
+            btnVaciar.FlatStyle = FlatStyle.Flat;
+            btnVaciar.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            btnVaciar.ForeColor = Color.FromArgb(148, 85, 112);
+            btnVaciar.Location = new Point(132, 360);
+            btnVaciar.Name = "btnVaciar";
+            btnVaciar.Size = new Size(108, 30);
+            btnVaciar.TabIndex = 19;
+            btnVaciar.Text = "Vaciar";
+            btnVaciar.UseVisualStyleBackColor = false;
+            btnVaciar.Click += btnVaciar_Click;
+            // 
+            // divLote
+            // 
+            divLote.BackColor = Color.FromArgb(228, 210, 220);
+            divLote.Location = new Point(16, 404);
+            divLote.Name = "divLote";
+            divLote.Size = new Size(224, 1);
+            divLote.TabIndex = 20;
+            // 
+            // lblLote
+            // 
+            lblLote.AutoSize = true;
+            lblLote.BackColor = Color.Transparent;
+            lblLote.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblLote.ForeColor = Color.FromArgb(90, 55, 72);
+            lblLote.Location = new Point(16, 371);
+            lblLote.Name = "lblLote";
+            lblLote.Size = new Size(128, 19);
+            lblLote.TabIndex = 21;
+            lblLote.Text = "TAMAÑO DE LOTE";
+            // 
+            // txtTamañoLote
+            // 
+            txtTamañoLote.BackColor = Color.FromArgb(253, 250, 252);
+            txtTamañoLote.BorderStyle = BorderStyle.FixedSingle;
+            txtTamañoLote.Font = new Font("Segoe UI", 12F);
+            txtTamañoLote.ForeColor = Color.FromArgb(60, 45, 55);
+            txtTamañoLote.Location = new Point(16, 393);
+            txtTamañoLote.Multiline = true;
+            txtTamañoLote.Name = "txtTamañoLote";
+            txtTamañoLote.Size = new Size(224, 40);
+            txtTamañoLote.TabIndex = 18;
+            // 
+            // pnlCenter
+            // 
+            pnlCenter.BackColor = Color.White;
             pnlCenter.Controls.Add(lblSeccionBusqueda);
             pnlCenter.Controls.Add(label5);
             pnlCenter.Controls.Add(txtBuscarId);
@@ -473,81 +379,260 @@ namespace LabDatos2
             pnlCenter.Controls.Add(divOps);
             pnlCenter.Controls.Add(lblSeccionOps);
             pnlCenter.Controls.Add(btnMigrarSql);
-
-            // ══════════════════════════════════════════════════════════════
-            //  PANEL DERECHO  —  Datos
-            // ══════════════════════════════════════════════════════════════
-            pnlRight.BackColor = cBgPanel;
-            pnlRight.Location = new Point(552, 82);
-            pnlRight.Size = new Size(706, 500);
-            pnlRight.Name = "pnlRight";
-
-            label6.Text = "DATOS DE CIUDADANOS";
-            label6.Font = fontSection;
-            label6.ForeColor = cTextLight;
-            label6.Location = new Point(16, 20);
-            label6.AutoSize = true;
-            label6.BackColor = Color.Transparent;
-            label6.Name = "label6";
-            label6.TabIndex = 13;
-
-            btnMostrarDatos.Location = new Point(558, 12);
-            btnMostrarDatos.Size = new Size(130, 32);
-            btnMostrarDatos.Text = "Mostrar Datos";
-            btnMostrarDatos.TabIndex = 14;
-            btnMostrarDatos.Name = "btnMostrarDatos";
-            btnMostrarDatos.BackColor = cRose;
-            btnMostrarDatos.ForeColor = Color.White;
-            btnMostrarDatos.Font = fontBtn;
-            btnMostrarDatos.FlatStyle = FlatStyle.Flat;
-            btnMostrarDatos.FlatAppearance.BorderSize = 0;
-            btnMostrarDatos.Cursor = Cursors.Hand;
-            btnMostrarDatos.Click += btnMostrarDatos_Click;
-
-            dgvCiudadanos.Location = new Point(16, 52);
-            dgvCiudadanos.Size = new Size(672, 436);
-            dgvCiudadanos.Name = "dgvCiudadanos";
-            dgvCiudadanos.TabIndex = 12;
-            dgvCiudadanos.RowHeadersWidth = 51;
-            dgvCiudadanos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCiudadanos.CellDoubleClick += dgvCiudadanos_CellDoubleClick;
-
+            pnlCenter.Controls.Add(lblLote);
+            pnlCenter.Controls.Add(txtTamañoLote);
+            pnlCenter.Location = new Point(282, 82);
+            pnlCenter.Name = "pnlCenter";
+            pnlCenter.Size = new Size(258, 500);
+            pnlCenter.TabIndex = 3;
+            // 
+            // lblSeccionBusqueda
+            // 
+            lblSeccionBusqueda.AutoSize = true;
+            lblSeccionBusqueda.BackColor = Color.Transparent;
+            lblSeccionBusqueda.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblSeccionBusqueda.ForeColor = Color.FromArgb(148, 85, 112);
+            lblSeccionBusqueda.Location = new Point(16, 18);
+            lblSeccionBusqueda.Name = "lblSeccionBusqueda";
+            lblSeccionBusqueda.Size = new Size(84, 19);
+            lblSeccionBusqueda.TabIndex = 0;
+            lblSeccionBusqueda.Text = "BÚSQUEDA";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.BackColor = Color.Transparent;
+            label5.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            label5.ForeColor = Color.FromArgb(90, 55, 72);
+            label5.Location = new Point(16, 46);
+            label5.Name = "label5";
+            label5.Size = new Size(96, 19);
+            label5.TabIndex = 0;
+            label5.Text = "ID A BUSCAR";
+            // 
+            // txtBuscarId
+            // 
+            txtBuscarId.BackColor = Color.FromArgb(253, 250, 252);
+            txtBuscarId.BorderStyle = BorderStyle.FixedSingle;
+            txtBuscarId.Font = new Font("Segoe UI", 10F);
+            txtBuscarId.ForeColor = Color.FromArgb(60, 45, 55);
+            txtBuscarId.Location = new Point(16, 62);
+            txtBuscarId.Name = "txtBuscarId";
+            txtBuscarId.Size = new Size(224, 30);
+            txtBuscarId.TabIndex = 5;
+            // 
+            // btnBuscarSecuencial
+            // 
+            btnBuscarSecuencial.BackColor = Color.White;
+            btnBuscarSecuencial.Cursor = Cursors.Hand;
+            btnBuscarSecuencial.FlatAppearance.BorderColor = Color.FromArgb(160, 120, 155);
+            btnBuscarSecuencial.FlatStyle = FlatStyle.Flat;
+            btnBuscarSecuencial.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            btnBuscarSecuencial.ForeColor = Color.FromArgb(160, 120, 155);
+            btnBuscarSecuencial.Location = new Point(16, 104);
+            btnBuscarSecuencial.Name = "btnBuscarSecuencial";
+            btnBuscarSecuencial.Size = new Size(224, 32);
+            btnBuscarSecuencial.TabIndex = 6;
+            btnBuscarSecuencial.Text = "Búsqueda Secuencial";
+            btnBuscarSecuencial.UseVisualStyleBackColor = false;
+            btnBuscarSecuencial.Click += btnBuscarSecuencial_Click;
+            // 
+            // btnBuscarIndexado
+            // 
+            btnBuscarIndexado.BackColor = Color.FromArgb(110, 155, 135);
+            btnBuscarIndexado.Cursor = Cursors.Hand;
+            btnBuscarIndexado.FlatAppearance.BorderSize = 0;
+            btnBuscarIndexado.FlatStyle = FlatStyle.Flat;
+            btnBuscarIndexado.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            btnBuscarIndexado.ForeColor = Color.White;
+            btnBuscarIndexado.Location = new Point(16, 146);
+            btnBuscarIndexado.Name = "btnBuscarIndexado";
+            btnBuscarIndexado.Size = new Size(224, 32);
+            btnBuscarIndexado.TabIndex = 7;
+            btnBuscarIndexado.Text = "Búsqueda Indexada";
+            btnBuscarIndexado.UseVisualStyleBackColor = false;
+            btnBuscarIndexado.Click += btnBuscarIndexado_Click;
+            // 
+            // divRes
+            // 
+            divRes.BackColor = Color.FromArgb(228, 210, 220);
+            divRes.Location = new Point(16, 194);
+            divRes.Name = "divRes";
+            divRes.Size = new Size(224, 1);
+            divRes.TabIndex = 8;
+            // 
+            // lblResultado
+            // 
+            lblResultado.BackColor = Color.Transparent;
+            lblResultado.Font = new Font("Segoe UI", 8.5F);
+            lblResultado.ForeColor = Color.FromArgb(148, 85, 112);
+            lblResultado.Location = new Point(16, 200);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(224, 42);
+            lblResultado.TabIndex = 10;
+            lblResultado.Text = "Esperando búsqueda...";
+            // 
+            // lblTimingTitle
+            // 
+            lblTimingTitle.AutoSize = true;
+            lblTimingTitle.BackColor = Color.Transparent;
+            lblTimingTitle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblTimingTitle.ForeColor = Color.FromArgb(148, 85, 112);
+            lblTimingTitle.Location = new Point(16, 252);
+            lblTimingTitle.Name = "lblTimingTitle";
+            lblTimingTitle.Size = new Size(168, 19);
+            lblTimingTitle.TabIndex = 11;
+            lblTimingTitle.Text = "TIEMPOS DE EJECUCIÓN";
+            // 
+            // lblTiempoSecuencial
+            // 
+            lblTiempoSecuencial.AutoSize = true;
+            lblTiempoSecuencial.BackColor = Color.Transparent;
+            lblTiempoSecuencial.Font = new Font("Segoe UI", 8.5F);
+            lblTiempoSecuencial.ForeColor = Color.FromArgb(90, 55, 72);
+            lblTiempoSecuencial.Location = new Point(16, 274);
+            lblTiempoSecuencial.Name = "lblTiempoSecuencial";
+            lblTiempoSecuencial.Size = new Size(131, 20);
+            lblTiempoSecuencial.TabIndex = 8;
+            lblTiempoSecuencial.Text = "Secuencial:  0 ticks";
+            // 
+            // lblTiempoIndexado
+            // 
+            lblTiempoIndexado.AutoSize = true;
+            lblTiempoIndexado.BackColor = Color.Transparent;
+            lblTiempoIndexado.Font = new Font("Segoe UI", 8.5F);
+            lblTiempoIndexado.ForeColor = Color.FromArgb(110, 155, 135);
+            lblTiempoIndexado.Location = new Point(16, 296);
+            lblTiempoIndexado.Name = "lblTiempoIndexado";
+            lblTiempoIndexado.Size = new Size(130, 20);
+            lblTiempoIndexado.TabIndex = 9;
+            lblTiempoIndexado.Text = "Indexada:    0 ticks";
+            // 
+            // divOps
+            // 
+            divOps.BackColor = Color.FromArgb(228, 210, 220);
+            divOps.Location = new Point(16, 328);
+            divOps.Name = "divOps";
+            divOps.Size = new Size(224, 1);
+            divOps.TabIndex = 12;
+            // 
+            // lblSeccionOps
+            // 
+            lblSeccionOps.AutoSize = true;
+            lblSeccionOps.BackColor = Color.Transparent;
+            lblSeccionOps.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            lblSeccionOps.ForeColor = Color.FromArgb(148, 85, 112);
+            lblSeccionOps.Location = new Point(16, 340);
+            lblSeccionOps.Name = "lblSeccionOps";
+            lblSeccionOps.Size = new Size(105, 19);
+            lblSeccionOps.TabIndex = 13;
+            lblSeccionOps.Text = "OPERACIONES";
+            // 
+            // btnMigrarSql
+            // 
+            btnMigrarSql.BackColor = Color.FromArgb(100, 110, 140);
+            btnMigrarSql.Cursor = Cursors.Hand;
+            btnMigrarSql.FlatAppearance.BorderSize = 0;
+            btnMigrarSql.FlatStyle = FlatStyle.Flat;
+            btnMigrarSql.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            btnMigrarSql.ForeColor = Color.White;
+            btnMigrarSql.Location = new Point(16, 449);
+            btnMigrarSql.Name = "btnMigrarSql";
+            btnMigrarSql.Size = new Size(224, 32);
+            btnMigrarSql.TabIndex = 11;
+            btnMigrarSql.Text = "Migrar a SQL Server";
+            btnMigrarSql.UseVisualStyleBackColor = false;
+            btnMigrarSql.Click += btnMigrarSql_Click;
+            // 
+            // pnlRight
+            // 
+            pnlRight.BackColor = Color.White;
             pnlRight.Controls.Add(label6);
             pnlRight.Controls.Add(btnMostrarDatos);
             pnlRight.Controls.Add(dgvCiudadanos);
-
-            // ── Separadores visuales ──────────────────────────────────────
-            Panel sepLC = new Panel();
-            sepLC.BackColor = cPanelGap;
+            pnlRight.Location = new Point(552, 82);
+            pnlRight.Name = "pnlRight";
+            pnlRight.Size = new Size(706, 500);
+            pnlRight.TabIndex = 5;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.BackColor = Color.Transparent;
+            label6.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            label6.ForeColor = Color.FromArgb(148, 85, 112);
+            label6.Location = new Point(16, 20);
+            label6.Name = "label6";
+            label6.Size = new Size(172, 19);
+            label6.TabIndex = 13;
+            label6.Text = "DATOS DE CIUDADANOS";
+            // 
+            // btnMostrarDatos
+            // 
+            btnMostrarDatos.BackColor = Color.FromArgb(188, 100, 130);
+            btnMostrarDatos.Cursor = Cursors.Hand;
+            btnMostrarDatos.FlatAppearance.BorderSize = 0;
+            btnMostrarDatos.FlatStyle = FlatStyle.Flat;
+            btnMostrarDatos.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnMostrarDatos.ForeColor = Color.White;
+            btnMostrarDatos.Location = new Point(558, 12);
+            btnMostrarDatos.Name = "btnMostrarDatos";
+            btnMostrarDatos.Size = new Size(130, 32);
+            btnMostrarDatos.TabIndex = 14;
+            btnMostrarDatos.Text = "Mostrar Datos";
+            btnMostrarDatos.UseVisualStyleBackColor = false;
+            btnMostrarDatos.Click += btnMostrarDatos_Click;
+            // 
+            // dgvCiudadanos
+            // 
+            dgvCiudadanos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCiudadanos.Location = new Point(16, 52);
+            dgvCiudadanos.Name = "dgvCiudadanos";
+            dgvCiudadanos.RowHeadersWidth = 51;
+            dgvCiudadanos.Size = new Size(672, 436);
+            dgvCiudadanos.TabIndex = 12;
+            dgvCiudadanos.CellDoubleClick += dgvCiudadanos_CellDoubleClick;
+            // 
+            // sepLC
+            // 
+            sepLC.BackColor = Color.FromArgb(235, 225, 230);
             sepLC.Location = new Point(270, 82);
+            sepLC.Name = "sepLC";
             sepLC.Size = new Size(12, 500);
-
-            Panel sepCR = new Panel();
-            sepCR.BackColor = cPanelGap;
+            sepLC.TabIndex = 2;
+            // 
+            // sepCR
+            // 
+            sepCR.BackColor = Color.FromArgb(235, 225, 230);
             sepCR.Location = new Point(540, 82);
+            sepCR.Name = "sepCR";
             sepCR.Size = new Size(12, 500);
-
-            // ══════════════════════════════════════════════════════════════
-            //  FORMULARIO
-            // ══════════════════════════════════════════════════════════════
-            BackColor = cBgForm;
+            sepCR.TabIndex = 4;
+            // 
+            // Form1
+            // 
+            BackColor = Color.FromArgb(250, 246, 248);
             ClientSize = new Size(1270, 594);
-            Text = "El Arquitecto de Datos";
-            Name = "Form1";
-            Font = new Font("Segoe UI", 9.5F);
-
             Controls.Add(pnlHeader);
             Controls.Add(pnlLeft);
             Controls.Add(sepLC);
             Controls.Add(pnlCenter);
             Controls.Add(sepCR);
             Controls.Add(pnlRight);
-
+            Font = new Font("Segoe UI", 9.5F);
+            Name = "Form1";
+            Text = "El Arquitecto de Datos";
             Load += Form1_Load;
-
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            pnlLeft.ResumeLayout(false);
+            pnlLeft.PerformLayout();
+            pnlCenter.ResumeLayout(false);
+            pnlCenter.PerformLayout();
+            pnlRight.ResumeLayout(false);
+            pnlRight.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCiudadanos).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         // ══════════════════════════════════════════════════════════════
@@ -640,5 +725,13 @@ namespace LabDatos2
         private Button btnCargar;
         private TextBox txtTamañoLote;
         private Button btnVaciar;
+        private Panel pnlAccent;
+        private Panel divReg;
+        private Panel divLote;
+        private Panel divRes;
+        private Label lblTimingTitle;
+        private Panel divOps;
+        private Panel sepLC;
+        private Panel sepCR;
     }
 }

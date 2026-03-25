@@ -39,71 +39,71 @@ namespace LabDatos2
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-                int id = int.Parse(txtId.Text);
-                string nombre = txtNombre.Text;
-                int edad = int.Parse(txtEdad.Text);
-                int posicion = int.Parse(txtPosicion.Text);
+            int id = int.Parse(txtId.Text);
+            string nombre = txtNombre.Text;
+            int edad = int.Parse(txtEdad.Text);
 
-                Ciudadano ciudadano = new Ciudadano();
-                ciudadano.Id = id;
-                ciudadano.Nombre = nombre;
-                ciudadano.Edad = edad;
+            Ciudadano ciudadano = new Ciudadano();
+            ciudadano.Id = id;
+            ciudadano.Nombre = txtNombre.Text;
+            ciudadano.Edad = edad;
 
-                // La consulta SQL con parámetros
-                string query = "INSERT INTO Ciudadano (Id, Nombre, Edad ) VALUES (@id, @nombre, @edad)";
+            // La consulta SQL con parámetros
+            string query = "INSERT INTO Ciudadano (Id, Nombre, Edad ) VALUES (@id, @nombre, @edad)";
 
-                try
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(Configuracion.CadenaConexion))
                 {
-                    using (SqlConnection conexion = new SqlConnection(Configuracion.CadenaConexion))
+                    using (SqlCommand comando = new SqlCommand(query, conexion))
                     {
-                        using (SqlCommand comando = new SqlCommand(query, conexion))
-                        {
-                            // Asignamos los parámetros de forma segura
-                            comando.Parameters.AddWithValue("@id", ciudadano.Id);
-                            comando.Parameters.AddWithValue("@nombre", ciudadano.Nombre);
-                            comando.Parameters.AddWithValue("@edad", ciudadano.Edad);
+                        // Asignamos los parámetros de forma segura
+                        comando.Parameters.AddWithValue("@id", ciudadano.Id);
+                        comando.Parameters.AddWithValue("@nombre", ciudadano.Nombre);
+                        comando.Parameters.AddWithValue("@edad", ciudadano.Edad);
 
-                            conexion.Open();
-                            comando.ExecuteNonQuery(); // Enviamos el registro al servidor
-                        }
+                        conexion.Open();
+                        comando.ExecuteNonQuery(); // Enviamos el registro al servidor
                     }
+                }
 
-                    // Mantenemos la tabla visual actualizada
-                    _listaCiudadanos.Add(ciudadano);
+                // Mantenemos la tabla visual actualizada
+                _listaCiudadanos.Add(ciudadano);
 
-                    // 1. Quitamos cualquier selección anterior
-                    dgvCiudadanos.ClearSelection();
+                // 1. Quitamos cualquier selección anterior
+                dgvCiudadanos.ClearSelection();
 
-                    // 2. Recorremos el DGV para encontrar el ID recién agregado
-                    foreach (DataGridViewRow fila in dgvCiudadanos.Rows)
+                // 2. Recorremos el DGV para encontrar el ID recién agregado
+                // Recorremos el DGV para encontrar el registro
+                foreach (DataGridViewRow fila in dgvCiudadanos.Rows)
+                {
+                    // Usamos Cells[0] asumiendo que el ID es la primera columna
+                    if (fila.Cells[0].Value != null && fila.Cells[0].Value.ToString() == ciudadano.Id.ToString())
                     {
-                        // Usamos Cells[0] asumiendo que el ID es la primera columna
-                        if (fila.Cells[0].Value != null && fila.Cells[0].Value.ToString() == ciudadano.Id.ToString())
-                        {
-                            fila.Selected = true; // Resaltamos la fila
-                            dgvCiudadanos.FirstDisplayedScrollingRowIndex = fila.Index; // Hacemos scroll
-                            break;
-                        }
+                        fila.Selected = true; // Resaltamos la fila
+                        dgvCiudadanos.FirstDisplayedScrollingRowIndex = fila.Index; // Hacemos scroll
+                        break;
                     }
-                    // -------------------------------------------------------
+                }
+                // -------------------------------------------------------
 
-                    MessageBox.Show("Ciudadano guardado correctamente en SQL Server.");
+                MessageBox.Show("Ciudadano guardado correctamente en SQL Server.");
 
-                    // Limpiamos la interfaz
-                    txtNombre.Clear();
-                    txtEdad.Clear();
-                    txtPosicion.Clear();
-                    ActualizarSiguienteRegistro();
-                }
-                catch (SqlException sqlEx)
-                {
-                    MessageBox.Show("Error al conectar con el servidor: " + sqlEx.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error inesperado al guardar: " + ex.Message);
-                }
-            
+                // Limpiamos la interfaz
+                txtNombre.Clear();
+                txtEdad.Clear();
+                txtPosicion.Clear();
+                ActualizarSiguienteRegistro();
+            }
+            catch (SqlException sqlEx)
+            {
+                MessageBox.Show("Error al conectar con el servidor: " + sqlEx.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error inesperado al guardar: " + ex.Message);
+            }
+
         }
 
         private void btnBuscarSecuencial_Click(object sender, EventArgs e)
@@ -120,6 +120,7 @@ namespace LabDatos2
 
         private void btnBuscarIndexado_Click(object sender, EventArgs e)
         {
+           
             if (int.TryParse(txtBuscarId.Text, out int idABuscar))
             {
                 Stopwatch sw = Stopwatch.StartNew();
@@ -141,9 +142,11 @@ namespace LabDatos2
         {
             labelTiempo.Text = $"Tiempo: {ticks} ticks";
             if (c.HasValue)
-                lblResultado.Text = $"Encontrado: {c.Value.Nombre}, Edad: {c.Value.Edad}";
-            else
-                lblResultado.Text = "Registro no encontrado.";
+            {
+                lblResultado.Text = $"Encontrado: {c.Value.NombreProp}, Edad: {c.Value.EdadProp}";
+            }
+           // else
+              //  lblResultado.Text = "Registro no encontrado.";
         }
 
         private async void btnMigrarSql_Click(object sender, EventArgs e)
@@ -205,7 +208,7 @@ namespace LabDatos2
 
                 if (tablaNuevos.Rows.Count == 0)
                 {
-                    MessageBox.Show("Todos los registros ya están en SQL Server. No hay nada nuevo que migrar.");
+                    MessageBox.Show("Todos los registros ya están en SQL Server.");
                     return;
                 }
 
@@ -310,7 +313,7 @@ namespace LabDatos2
             string connectionString = Configuracion.CadenaConexion; using (SqlConnection conexion = new SqlConnection(connectionString))
             {
                 // El comando UPDATE busca por ID y cambia el Nombre y la Edad
-                string query = "UPDATE Ciudadanos SET Nombre = @Nombre, Edad = @Edad WHERE Id = @Id";
+                string query = "UPDATE Ciudadano SET Nombre = @Nombre, Edad = @Edad WHERE Id = @Id";
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
@@ -380,7 +383,7 @@ namespace LabDatos2
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                string query = "DELETE FROM Ciudadanos WHERE Id = @Id";
+                string query = "DELETE FROM Ciudadano WHERE Id = @Id";
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
@@ -452,8 +455,7 @@ namespace LabDatos2
         {
             // 1. Preparamos las herramientas de generación
             Random rnd = new Random();
-            //string[] nombres = { "Carolina", "Jimena", "Cesar", "Natalia", "Luis", "Elena", "Pedro", "Sofia", "Miguel", "Lucia" };
-            //string[] apellidos = { "Gomez", "Sanchez", "Perez", "Rodriguez", "Lopez", "Martinez", "Garcia", "Hernandez", "Ruiz", "Diaz" };
+            
             string[] nombres = {
                 "Carolina", "Jimena", "Cesar", "Natalia", "Luis",
                 "Elena", "Pedro", "Sofia", "Miguel", "Lucia",
@@ -559,7 +561,7 @@ namespace LabDatos2
                     string connectionString = Configuracion.CadenaConexion; using (SqlConnection conexion = new SqlConnection(connectionString))
                     {
                         // Usamos TRUNCATE en lugar de DELETE porque es instantáneo y limpia todo de raíz
-                        string query = "TRUNCATE TABLE Ciudadanos";
+                        string query = "TRUNCATE TABLE Ciudadano";
                         using (SqlCommand comando = new SqlCommand(query, conexion))
                         {
                             conexion.Open();
@@ -569,7 +571,7 @@ namespace LabDatos2
 
                     // --- B. VACIAR EL ARCHIVO LOCAL (.dat) ---
                     // Al usar FileMode.Create, C# aplasta el archivo viejo y crea uno nuevo totalmente vacío (0 bytes)
-                    using (FileStream fs = new FileStream("datos_ciudadanos.dat", FileMode.Create, FileAccess.Write))
+                    using (FileStream fs = new FileStream("datos_ciudadano.dat", FileMode.Create, FileAccess.Write))
                     {
                         // No escribimos nada, solo lo dejamos en blanco.
                     }
