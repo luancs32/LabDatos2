@@ -1,7 +1,9 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -19,12 +21,11 @@ namespace LabDatos2
             InitializeComponent();
             _listaCiudadanos = new BindingList<Ciudadano>();
             dgvCiudadanos.DataSource = _listaCiudadanos;
-            _listaCiudadanos = new BindingList<Ciudadano>();
-            dgvCiudadanos.DataSource = _listaCiudadanos;
-
-            // ¡Aquí! Para que el primer ID (0) aparezca en cuanto abras el programa
+            //  Para que el primer ID (0) aparezca en cuanto abras el programa
             ActualizarSiguienteRegistro();
-            txtTamañoLote.Text = "500";//Lote para migrar a sql
+            //Lote para migrar a sql
+            txtTamañoLote.Text = "";
+
             ConfigurarDisenoTabla();
             _gestorArchivos = new GestorArchivos();
             _gestorIndice = new GestorIndice();
@@ -38,8 +39,6 @@ namespace LabDatos2
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            try
-            {
                 int id = int.Parse(txtId.Text);
                 string nombre = txtNombre.Text;
                 int edad = int.Parse(txtEdad.Text);
@@ -49,32 +48,62 @@ namespace LabDatos2
                 ciudadano.Id = id;
                 ciudadano.Nombre = nombre;
                 ciudadano.Edad = edad;
-                // Guardar en los archivos locales
-                _gestorArchivos.GuardarCiudadano(ciudadano, posicion);
-                _gestorIndice.GuardarEnIndice(id, posicion);
 
-                // 3. ¡Agrega el ciudadano a la lista visual del DataGridView!
-                _listaCiudadanos.Add(ciudadano);
+                // La consulta SQL con parámetros
+                string query = "INSERT INTO Ciudadano (Id, Nombre, Edad ) VALUES (@id, @nombre, @edad)";
 
-                _gestorArchivos.GuardarCiudadano(ciudadano, posicion);
-                _gestorIndice.GuardarEnIndice(id, posicion);
+                try
+                {
+                    using (SqlConnection conexion = new SqlConnection(Configuracion.CadenaConexion))
+                    {
+                        using (SqlCommand comando = new SqlCommand(query, conexion))
+                        {
+                            // Asignamos los parámetros de forma segura
+                            comando.Parameters.AddWithValue("@id", ciudadano.Id);
+                            comando.Parameters.AddWithValue("@nombre", ciudadano.Nombre);
+                            comando.Parameters.AddWithValue("@edad", ciudadano.Edad);
 
-                MessageBox.Show("Ciudadano guardado correctamente.");
-                // --- Nuevas líneas para limpiar la interfaz ---
+                            conexion.Open();
+                            comando.ExecuteNonQuery(); // Enviamos el registro al servidor
+                        }
+                    }
 
-                txtNombre.Clear();
-                txtEdad.Clear();
-                txtPosicion.Clear();
+                    // Mantenemos la tabla visual actualizada
+                    _listaCiudadanos.Add(ciudadano);
 
-                // ¡Actualizamos para el siguiente registro!
-                ActualizarSiguienteRegistro();
+                    // 1. Quitamos cualquier selección anterior
+                    dgvCiudadanos.ClearSelection();
 
+                    // 2. Recorremos el DGV para encontrar el ID recién agregado
+                    foreach (DataGridViewRow fila in dgvCiudadanos.Rows)
+                    {
+                        // Usamos Cells[0] asumiendo que el ID es la primera columna
+                        if (fila.Cells[0].Value != null && fila.Cells[0].Value.ToString() == ciudadano.Id.ToString())
+                        {
+                            fila.Selected = true; // Resaltamos la fila
+                            dgvCiudadanos.FirstDisplayedScrollingRowIndex = fila.Index; // Hacemos scroll
+                            break;
+                        }
+                    }
+                    // -------------------------------------------------------
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al guardar: " + ex.Message);
-            }
+                    MessageBox.Show("Ciudadano guardado correctamente en SQL Server.");
+
+                    // Limpiamos la interfaz
+                    txtNombre.Clear();
+                    txtEdad.Clear();
+                    txtPosicion.Clear();
+                    ActualizarSiguienteRegistro();
+                }
+                catch (SqlException sqlEx)
+                {
+                    MessageBox.Show("Error al conectar con el servidor: " + sqlEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error inesperado al guardar: " + ex.Message);
+                }
+            
         }
 
         private void btnBuscarSecuencial_Click(object sender, EventArgs e)
@@ -119,90 +148,102 @@ namespace LabDatos2
 
         private async void btnMigrarSql_Click(object sender, EventArgs e)
         {
+            // 1. Validamos tu TextBox de Lotes
+            if (!int.TryParse(txtTamañoLote.Text, out int tamañoLote) || tamañoLote <= 0)
+            {
+                MessageBox.Show("Por favor, escribe un número válido y mayor a 0 para el tamaño del lote.");
+                return;
+            }
+
             try
             {
+                // Desactivamos el botón temporalmente para evitar dobles clics
                 btnMigrarSql.Enabled = false;
-                await _migradorSql.MigrarDesdeArchivo("datos_ciudadanos.dat");
-                MessageBox.Show("Migración a SQL Server EXPRESS completada.");
+                btnMigrarSql.Text = "Enviando lote...";
+
+                string connectionString = Configuracion.CadenaConexion;
+                int maxIdSQL = -1;
+
+                // 2. Averiguamos el último ID que ya existe en tu SQL Server
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    await conexion.OpenAsync();
+                    string queryMax = "SELECT ISNULL(MAX(Id), -1) FROM Ciudadano";
+                    using (SqlCommand cmdMax = new SqlCommand(queryMax, conexion))
+                    {
+                        maxIdSQL = (int)await cmdMax.ExecuteScalarAsync();
+                    }
+                }
+
+                // 3. Preparamos la tabla que viajará al servidor
+                DataTable tablaNuevos = new DataTable();
+                tablaNuevos.Columns.Add("Id", typeof(int));
+                tablaNuevos.Columns.Add("Nombre", typeof(string));
+                tablaNuevos.Columns.Add("Edad", typeof(int));
+
+                // Leemos todos los registros de tu archivo local
+                List<Ciudadano> todos = _gestorArchivos.LeerTodos();
+
+                // 4. FILTRO INTELIGENTE CON LÍMITE
+                foreach (var c in todos)
+                {
+                    // Solo miramos los que tengan un ID mayor al que ya está guardado
+                    if (c.IdProp > maxIdSQL)
+                    {
+                        if (c.IdProp == 0 && string.IsNullOrWhiteSpace(c.NombreProp)) continue;
+
+                        tablaNuevos.Rows.Add(c.IdProp, c.NombreProp, c.EdadProp);
+
+                        // --- ¡EL FRENO! ---
+                        // Si nuestra tabla ya alcanzó la cantidad que escribiste en el TextBox, nos detenemos.
+                        if (tablaNuevos.Rows.Count == tamañoLote)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (tablaNuevos.Rows.Count == 0)
+                {
+                    MessageBox.Show("Todos los registros ya están en SQL Server. No hay nada nuevo que migrar.");
+                    return;
+                }
+
+                Stopwatch cronometro = Stopwatch.StartNew();
+
+                // 5. MIGRAMOS SOLO ESE LOTE EXACTO
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    await conexion.OpenAsync();
+
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(conexion))
+                    {
+                        bulkCopy.DestinationTableName = "Ciudadano";
+
+                        bulkCopy.ColumnMappings.Add("Id", "Id");
+                        bulkCopy.ColumnMappings.Add("Nombre", "Nombre");
+                        bulkCopy.ColumnMappings.Add("Edad", "Edad");
+
+                        await bulkCopy.WriteToServerAsync(tablaNuevos);
+                    }
+                }
+
+                cronometro.Stop();
+                MessageBox.Show($"¡Lote enviado con éxito!\n\n" +
+                                $"Registros enviados en este clic: {tablaNuevos.Rows.Count}\n" +
+                                $"Tiempo: {cronometro.ElapsedMilliseconds} ms.\n" +
+                                $"Puedes volver a presionar el botón para mandar el siguiente lote.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en migración: " + ex.Message);
+                MessageBox.Show("Error durante la migración: " + ex.Message);
             }
             finally
             {
+                // Volvemos a encender el botón
                 btnMigrarSql.Enabled = true;
+                btnMigrarSql.Text = "Migrar a SQL Server";
             }
-            //comenta lo de arriba y checa esto 
-            //try
-            //{
-            //    List<Ciudadano> todosLosRegistros = _gestorArchivos.LeerTodos();
-            //    int total = todosLosRegistros.Count;
-
-            //    if (total == 0)
-            //    {
-            //        MessageBox.Show("No hay datos en el archivo para migrar.");
-            //        return;
-            //    }
-
-            //    // Leemos el tamaño del lote desde tu nuevo TextBox (por defecto será 500)
-            //    int tamañoLote = int.Parse(txtTamañoLote.Text);
-            //    string connectionString = "Server=10.12.13.143,1433;Database=LabDatos2;User Id=sa;Password=123;TrustServerCertificate=True;";
-
-            //    //INICIAMOS EL CRONÓMETRO!
-            //    Stopwatch cronometro = new Stopwatch();
-            //    cronometro.Start();
-
-            //    using (SqlConnection conexion = new SqlConnection(connectionString))
-            //    {
-            //        conexion.Open();
-
-            //        for (int i = 0; i < total; i += tamañoLote)
-            //        {
-            //            int cantidadRestante = Math.Min(tamañoLote, total - i);
-            //            List<Ciudadano> loteActual = todosLosRegistros.GetRange(i, cantidadRestante);
-
-            //            using (SqlTransaction transaccion = conexion.BeginTransaction())
-            //            {
-            //                try
-            //                {
-            //                    foreach (Ciudadano c in loteActual)
-            //                    {
-            //                        if (c.IdProp == 0 && string.IsNullOrWhiteSpace(c.NombreProp)) continue;
-
-            //                        string query = "INSERT INTO Ciudadanos (Id, Nombre, Edad) VALUES (@Id, @Nombre, @Edad)";
-            //                        using (SqlCommand comando = new SqlCommand(query, conexion, transaccion))
-            //                        {
-            //                            comando.Parameters.AddWithValue("@Id", c.IdProp);
-            //                            comando.Parameters.AddWithValue("@Nombre", c.NombreProp);
-            //                            comando.Parameters.AddWithValue("@Edad", c.EdadProp);
-            //                            comando.ExecuteNonQuery();
-            //                        }
-            //                    }
-            //                    transaccion.Commit();
-            //                }
-            //                catch (Exception)
-            //                {
-            //                    transaccion.Rollback();
-            //                    throw;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // DETENEMOS EL CRONÓMETRO!
-            //    cronometro.Stop();
-
-            //    // Mostramos el tiempo exacto para tu reporte
-            //    MessageBox.Show($"¡Migración exitosa!\n\n" +
-            //                    $"Registros enviados: {total}\n" +
-            //                    $"Tamaño de los lotes: {tamañoLote}\n" +
-            //                    $"Tiempo total: {cronometro.ElapsedMilliseconds} milisegundos.");
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Error durante la migración: " + ex.Message);
-            //}
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -212,31 +253,38 @@ namespace LabDatos2
 
         private void btnMostrarDatos_Click(object sender, EventArgs e)
         {
-            try
+            dgvCiudadanos.DataSource = null;
+            _listaCiudadanos.Clear();
+
+            string connectionString = Configuracion.CadenaConexion;
+            using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                // 1. Limpiamos la lista visual para evitar duplicados en pantalla
-                _listaCiudadanos.Clear();
+                string query = "SELECT * FROM Ciudadano";
+                SqlCommand comando = new SqlCommand(query, conexion);
 
-                // 2. Le pedimos al gestor que nos traiga todos los datos del archivo local .dat
-                // (Asegúrate de tener un método similar a este en tu clase GestorArchivos)
-                List<Ciudadano> registros = _gestorArchivos.LeerTodos();
-
-                // 3. Recorremos los registros y los agregamos a la tabla
-                foreach (Ciudadano ciudadano in registros)
+                try
                 {
-                    // Opcional: Filtramos el registro "fantasma" de la posición 0 que vimos antes
-                    if (ciudadano.Id != 0)
+                    conexion.Open();
+                    SqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        _listaCiudadanos.Add(ciudadano);
+                        Ciudadano c = new Ciudadano();
+
+                        c.Id = Convert.ToInt32(reader["Id"]);
+                        c.Nombre = reader["Nombre"].ToString();
+                        c.Edad = Convert.ToInt32(reader["Edad"]);
+
+                        _listaCiudadanos.Add(c);
                     }
                 }
-                ActualizarSiguienteRegistro();
-                MessageBox.Show("Datos cargados exitosamente en la tabla.");
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al traer los datos: " + ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al mostrar los datos: " + ex.Message);
-            }
+
+            dgvCiudadanos.DataSource = _listaCiudadanos;
         }
         private void ActualizarSiguienteRegistro()
         {
@@ -257,9 +305,9 @@ namespace LabDatos2
 
         private void ActualizarEnSqlServer(Ciudadano ciudadanoEditado)
         {
+            
             // Usa la misma cadena de conexión que tienes en tu botón de migrar
-            string connectionString = "Server=10.12.13.143,1433;Database=LabDatos2;User Id=sa;Password=123;TrustServerCertificate=True;";
-            using (SqlConnection conexion = new SqlConnection(connectionString))
+            string connectionString = Configuracion.CadenaConexion; using (SqlConnection conexion = new SqlConnection(connectionString))
             {
                 // El comando UPDATE busca por ID y cambia el Nombre y la Edad
                 string query = "UPDATE Ciudadanos SET Nombre = @Nombre, Edad = @Edad WHERE Id = @Id";
@@ -311,7 +359,8 @@ namespace LabDatos2
                 }
 
                 // Refrescamos la tabla para ver los cambios
-                dgvCiudadanos.Refresh();
+                dgvCiudadanos.DataSource = null;
+                dgvCiudadanos.DataSource = _listaCiudadanos;
 
                 MessageBox.Show("Registro editado correctamente en el archivo local y en SQL Server.");
 
@@ -327,7 +376,7 @@ namespace LabDatos2
         }
         private void EliminarEnSqlServer(int id)
         {
-            string connectionString = "Server=10.12.13.143,1433;Database=LabDatos2;User Id=sa;Password=123;TrustServerCertificate=True;";
+            string connectionString = Configuracion.CadenaConexion;
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
@@ -432,7 +481,7 @@ namespace LabDatos2
             };
 
             int inicioId = _listaCiudadanos.Count; // Empezamos desde el ID que siga
-            int cantidadAGenerar = 1000;
+            int cantidadAGenerar = 100000;
 
             try
             {
@@ -468,7 +517,7 @@ namespace LabDatos2
                 ActualizarSiguienteRegistro();
                 dgvCiudadanos.Refresh();
 
-                MessageBox.Show("¡1000 registros generados en el archivo local!\nRevisa tu tabla y presiona 'Migrar a SQL' cuando estés lista.");
+                MessageBox.Show("¡Registros generados en el archivo local!\nRevisa tu tabla y presiona 'Migrar a SQL' cuando estés lista.");
             }
             catch (Exception ex)
             {
@@ -506,9 +555,8 @@ namespace LabDatos2
             {
                 try
                 {
-                    // --- A. VACIAR LA BASE DE DATOS (SQL Server) ---
-                    string connectionString = "Server=10.12.13.143,1433;Database=LabDatos2;User Id=sa;Password=123;TrustServerCertificate=True;";
-                    using (SqlConnection conexion = new SqlConnection(connectionString))
+                   //A.VACIAR LA BASE DE DATOS(SQL Server) ---
+                    string connectionString = Configuracion.CadenaConexion; using (SqlConnection conexion = new SqlConnection(connectionString))
                     {
                         // Usamos TRUNCATE en lugar de DELETE porque es instantáneo y limpia todo de raíz
                         string query = "TRUNCATE TABLE Ciudadanos";
